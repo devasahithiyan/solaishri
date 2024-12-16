@@ -52,12 +52,14 @@
             font-family: var(--font-secondary);
             font-size: 2rem;
         }
-        /* Export Button */
+        /* Export Buttons */
         .export-container {
             width: 100%;
             display: flex;
             justify-content: flex-start;
+            gap: 10px; /* Added gap between buttons */
             margin-bottom: 20px;
+            flex-wrap: wrap; /* Allows buttons to wrap on smaller screens */
         }
         .export-container button {
             background-color: var(--button-bg);
@@ -338,9 +340,10 @@
 
     <h1>Solaishri Nilgiris - Admin Dashboard</h1>
 
-    <!-- Export Button -->
+    <!-- Export Buttons -->
     <div class="export-container">
-        <button id="export-btn"><i class="fas fa-file-export"></i> Export as CSV</button>
+        <button id="export-csv-btn"><i class="fas fa-file-export"></i> Export as CSV</button>
+        <button id="export-pdf-btn"><i class="fas fa-file-pdf"></i> Export as PDF</button>
     </div>
 
     <!-- Search Bar -->
@@ -386,6 +389,10 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <!-- Firebase Firestore -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- jsPDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- jsPDF-AutoTable Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
     <!-- Admin Script -->
     <script>
@@ -415,7 +422,8 @@
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
         const pageInfo = document.getElementById('page-info');
-        const exportBtn = document.getElementById('export-btn');
+        const exportCsvBtn = document.getElementById('export-csv-btn');
+        const exportPdfBtn = document.getElementById('export-pdf-btn');
         const totalSubmissionsDiv = document.getElementById('total-submissions');
 
         // Data variables
@@ -599,7 +607,7 @@
         });
 
         // Export to CSV Functionality
-        exportBtn.addEventListener('click', () => {
+        exportCsvBtn.addEventListener('click', () => {
             if (filteredSubmissions.length === 0) {
                 alert('No data available to export.');
                 return;
@@ -628,6 +636,67 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        });
+
+        // Export to PDF Functionality
+        exportPdfBtn.addEventListener('click', () => {
+            if (filteredSubmissions.length === 0) {
+                alert('No data available to export.');
+                return;
+            }
+
+            // Initialize jsPDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Add Title
+            doc.setFontSize(18);
+            doc.text('Solaishri Nilgiris - Submissions', 14, 22);
+
+            // Add Total Submissions
+            doc.setFontSize(12);
+            doc.text(totalSubmissionsDiv.textContent, 14, 30); // Positioning "Total Submissions" below the title
+
+            // Define the columns
+            const columns = [
+                { header: 'Email Address', dataKey: 'email' },
+                { header: 'Country Code', dataKey: 'country_code' },
+                { header: 'Phone Number', dataKey: 'phone' },
+                { header: 'Submission Time', dataKey: 'timestamp' }
+            ];
+
+            // Prepare the rows
+            const rows = filteredSubmissions.map(sub => ({
+                email: sub.email,
+                country_code: sub.country_code,
+                phone: sub.phone,
+                timestamp: sub.timestamp
+            }));
+
+            // Add AutoTable
+            doc.autoTable({
+                startY: 35, // Start the table below the "Total Submissions" text
+                head: [columns.map(col => col.header)],
+                body: rows.map(row => columns.map(col => row[col.dataKey])),
+                styles: { fontSize: 10 },
+                headStyles: { fillColor: [76, 175, 80] }, // Match header background color
+                theme: 'striped',
+                columnStyles: {
+                    email: { cellWidth: 'auto' },
+                    country_code: { cellWidth: 'auto' },
+                    phone: { cellWidth: 'auto' },
+                    timestamp: { cellWidth: 'auto' }
+                },
+                didDrawPage: function (data) {
+                    // Footer
+                    const pageCount = doc.internal.getNumberOfPages();
+                    doc.setFontSize(10);
+                    doc.text(`Page ${data.pageNumber} of ${pageCount}`, data.settings.margin.left, doc.internal.pageSize.height - 10);
+                }
+            });
+
+            // Save the PDF
+            doc.save('submissions.pdf');
         });
     </script>
 
