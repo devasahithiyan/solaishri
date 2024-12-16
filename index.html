@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Solaishri Nilgiris</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnH2N8x8M3lg2t5n7oY5l72k3r62hJg5Ow6L8Hf1KBuF8wKgHzbGNbEfa9vVh5gj0JxP+T+Iw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* Background Image with Overlay and Animation */
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('bg.jpg') repeat-x center center fixed;
+            background-size: cover;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            /* Animation Properties */
+            animation: backgroundPan 60s linear infinite;
+        }
+
+        /* Keyframes for Background Panning */
+        @keyframes backgroundPan {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* Optional: Pause animation on hover */
+        body:hover {
+            animation-play-state: paused;
+        }
+
+        /* Navbar */
+        .navbar {
+            width: 100%;
+            background: #ffffff; /* Fully opaque white */
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center; /* Center the logo */
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: background 0.3s ease;
+        }
+
+        .navbar img {
+            height: 60px; /* Increased size */
+            transition: transform 0.3s ease;
+            /* Removed box-shadow for a clean look */
+            /* box-shadow: 0 0 5px rgba(0,0,0,0.2); */
+        }
+
+        .navbar img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Main Content Wrapper */
+        .main-content {
+            /* Full viewport height minus navbar height */
+            flex: 1;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 80px; /* Space for navbar */
+            padding-bottom: 20px; /* Optional padding at the bottom */
+        }
+
+        /* Form Container */
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .form-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 600;
+            color: #f0f0f0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+            width: 100%;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #d1d1d1;
+            font-size: 16px;
+        }
+
+        .form-group label i {
+            margin-right: 8px;
+            color: #3fa14b;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.8);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus {
+            background: #fff;
+            box-shadow: 0 0 10px #3fa14b;
+        }
+
+        .form-group input:hover {
+            background: #fff;
+            box-shadow: 0 0 5px #3fa14b;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #3fa14b, #2d8f3e);
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+        }
+
+        .submit-btn:hover::after {
+            top: 100%;
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Catalogue Section */
+        .catalogue-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            display: none;
+            text-align: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .catalogue-section h3 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: 600;
+            color: #f0f0f0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .catalogue-section p {
+            margin-bottom: 30px;
+            font-size: 16px;
+            color: #d1d1d1;
+        }
+
+        .catalogue-link {
+            display: inline-block;
+            text-decoration: none;
+            background: #3fa14b;
+            padding: 12px 25px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+            transition: background 0.3s ease, transform 0.3s ease;
+            font-size: 16px;
+        }
+
+        .catalogue-link:hover {
+            background: #2d8f3e;
+            transform: translateY(-3px);
+        }
+
+        /* Loading Overlay */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(31, 47, 94, 0.8); /* Semi-transparent background */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1500; /* Ensures it's above all other elements */
+            display: none; /* Hidden by default */
+        }
+
+        /* Spinner Styles */
+        .lds-ring {
+            display: inline-block;
+            position: relative;
+            width: 60px;
+            height: 60px;
+        }
+        .lds-ring div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            margin: 8px;
+            border: 6px solid #fff;
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #fff transparent transparent transparent;
+        }
+        .lds-ring div:nth-child(1) {
+            animation-delay: -0.45s;
+        }
+        .lds-ring div:nth-child(2) {
+            animation-delay: -0.3s;
+        }
+        .lds-ring div:nth-child(3) {
+            animation-delay: -0.15s;
+        }
+        @keyframes lds-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 15px;
+            }
+
+            .navbar img {
+                height: 50px; /* Adjusted for better visibility on tablets */
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .form-container, .catalogue-section {
+                padding: 30px 20px;
+            }
+
+            .form-container h2 {
+                font-size: 22px;
+            }
+
+            .form-group label {
+                font-size: 14px;
+            }
+
+            .form-group input {
+                font-size: 14px;
+                padding: 10px 14px;
+            }
+
+            .submit-btn {
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            .catalogue-section h3 {
+                font-size: 20px;
+            }
+
+            .catalogue-link {
+                font-size: 14px;
+                padding: 10px 20px;
+            }
+
+            .lds-ring {
+                width: 50px;
+                height: 50px;
+            }
+
+            .lds-ring div {
+                width: 34px;
+                height: 34px;
+                margin: 8px;
+                border-width: 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 10px;
+            }
+
+            .form-container, .catalogue-section {
+                padding: 25px 15px;
+            }
+
+            .form-container h2 {
+                font-size: 20px;
+            }
+
+            .form-group label {
+                font-size: 13px;
+            }
+
+            .form-group input {
+                font-size: 13px;
+                padding: 8px 12px;
+            }
+
+            .submit-btn {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .catalogue-section h3 {
+                font-size: 18px;
+            }
+
+            .catalogue-link {
+                font-size: 12px;
+                padding: 8px 16px;
+            }
+
+            .lds-ring {
+                width: 40px;
+                height: 40px;
+            }
+
+            .lds-ring div {
+                width: 28px;
+                height: 28px;
+                margin: 6px;
+                border-width: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <!-- Update the logo path accordingly -->
+        <img src="logo.jpg" alt="Solaishri Nilgiris Logo">
+        <!-- Future: Hamburger menu can be added here for expanded navigation on mobile -->
+    </div>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content">
+        <!-- Form Container -->
+        <div class="form-container" id="form-container">
+            <h2>Welcome to Solaishri Nilgiris!</h2>
+            <form id="contact-form">
+                <!-- Spam Protection Honeypot -->
+                <input type="hidden" name="_honey" style="display:none">
+                
+                <!-- No redirect since we'll show catalogue inline -->
+                <input type="hidden" name="_captcha" value="false">
+
+                <!-- Form Fields -->
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email Address *</label>
+                    <input type="email" id="email" name="email" required placeholder="your-email@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="phone"><i class="fas fa-phone-alt"></i> Phone Number *</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+1 234 567 8901">
+                </div>
+
+                <button type="submit" class="submit-btn" aria-label="View Our Catalogue">View Our Catalogue</button>
+            </form>
+        </div>
+
+        <!-- Catalogue Section -->
+        <div class="catalogue-section" id="catalogue-section">
+            <h3>Our Catalogue</h3>
+            <p>Thank you for providing your details! Browse our catalogue below:</p>
+            <!-- Replace with your actual catalogue link or embed a PDF using an iframe -->
+            <a class="catalogue-link" href="solaishri.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Open Catalogue</a>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" aria-live="assertive">
+        <div class="lds-ring" aria-label="Loading..."><div></div><div></div><div></div><div></div></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('contact-form');
+        const formContainer = document.getElementById('form-container');
+        const catalogueSection = document.getElementById('catalogue-section');
+        const loadingOverlay = document.getElementById('loading-overlay'); // Loading overlay element
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Show loading overlay
+            loadingOverlay.style.display = 'flex';
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('https://formsubmit.co/ajax/devasahithiyan@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading overlay
+                loadingOverlay.style.display = 'none';
+
+                if (data.success) {
+                    // Hide form
+                    formContainer.style.display = 'none';
+                    // Show catalogue section with fade-in effect
+                    catalogueSection.style.display = 'block';
+                    catalogueSection.style.opacity = 0;
+                    setTimeout(() => {
+                        catalogueSection.style.transition = 'opacity 0.5s ease';
+                        catalogueSection.style.opacity = 1;
+                    }, 10);
+                } else {
+                    alert('Oops! Something went wrong. Please try again later.');
+                    console.error('Form submission error:', data);
+                }
+            })
+            .catch(error => {
+                // Hide loading overlay
+                loadingOverlay.style.display = 'none';
+
+                console.error('Error:', error);
+                alert('There was a problem submitting your information.');
+            });
+        });
+    </script>
+
+</body>
+</html>
