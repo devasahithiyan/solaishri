@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Solaishri Nilgiris - Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnH2N8x8M3lg2t5n7oY5l72k3r62hJg5Ow6L8Hf1KBuF8wKgHzbGNbEfa9vVh5gj0JxP+T+Iw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --font-primary: 'Poppins', sans-serif;
+            --font-secondary: 'Quicksand', sans-serif;
+            --color-primary: #4CAF50;
+            --color-secondary: #388E3C;
+            --color-accent: #ffffff;
+            --color-background: #f4f4f4;
+            --color-text: #333333;
+            --color-shadow: rgba(0,0,0,0.1);
+            --max-width: 1200px;
+            --table-header-bg: #4CAF50;
+            --table-header-color: #ffffff;
+            --table-row-hover-bg: #f1f1f1;
+            --button-bg: #4CAF50;
+            --button-color: #ffffff;
+            --button-hover-bg: #45a049;
+            --total-submissions-color: #333333;
+            --total-submissions-font-size: 18px;
+            --total-submissions-font-weight: 600;
+        }
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--color-primary);
+            font-family: var(--font-secondary);
+            font-size: 2rem;
+        }
+        /* Export Button */
+        .export-container {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+        .export-container button {
+            background-color: var(--button-bg);
+            color: var(--button-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        .export-container button:hover {
+            background-color: var(--button-hover-bg);
+        }
+        .export-container button i {
+            margin-right: 8px;
+        }
+        /* Search Bar */
+        .search-container {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            padding: 10px 15px;
+            width: 100%;
+            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        .search-container input:focus {
+            border-color: var(--color-primary);
+            outline: none;
+        }
+        /* Total Submissions */
+        #total-submissions {
+            width: 100%;
+            margin-bottom: 20px;
+            font-size: var(--total-submissions-font-size);
+            font-weight: var(--total-submissions-font-weight);
+            color: var(--total-submissions-color);
+            text-align: center;
+        }
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 8px var(--color-shadow);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background-color: var(--table-header-bg);
+            color: var(--table-header-color);
+            font-family: var(--font-secondary);
+            cursor: pointer;
+            position: relative;
+            user-select: none;
+        }
+        th.sortable:hover {
+            background-color: var(--color-secondary);
+        }
+        th.sortable::after {
+            content: '\f0dc';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 10px;
+            font-size: 12px;
+            color: #fff;
+            opacity: 0.6;
+        }
+        th.sortable.asc::after {
+            content: '\f0de';
+        }
+        th.sortable.desc::after {
+            content: '\f0dd';
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: var(--table-row-hover-bg);
+        }
+        /* Pagination */
+        .pagination {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .pagination button {
+            background-color: var(--button-bg);
+            color: var(--button-color);
+            border: none;
+            padding: 10px 15px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            flex: 0 0 auto;
+        }
+        .pagination button:hover {
+            background-color: var(--button-hover-bg);
+        }
+        .pagination button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .pagination span {
+            font-size: 16px;
+            margin: 0 10px;
+            color: var(--color-text);
+        }
+        /* Loading Spinner */
+        #loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50vh;
+        }
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid var(--color-primary);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Error Message */
+        #error-message {
+            width: 100%;
+            text-align: center;
+            color: red;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .export-container button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+            .search-container input {
+                max-width: 250px;
+            }
+            #total-submissions {
+                font-size: 16px;
+            }
+            th, td {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+            .pagination button {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+            .pagination span {
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            .export-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .export-container button {
+                width: 100%;
+                margin-bottom: 10px;
+                font-size: 14px;
+                padding: 10px 0;
+            }
+            .search-container {
+                justify-content: center;
+            }
+            .search-container input {
+                max-width: 100%;
+            }
+            #total-submissions {
+                font-size: 16px;
+            }
+            th, td {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+            .pagination button {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+            .pagination span {
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+            .export-container button {
+                font-size: 12px;
+                padding: 8px 0;
+            }
+            .search-container input {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+            #total-submissions {
+                font-size: 14px;
+            }
+            th, td {
+                padding: 6px 8px;
+                font-size: 12px;
+            }
+            .pagination button {
+                padding: 6px 8px;
+                font-size: 12px;
+            }
+            .pagination span {
+                font-size: 12px;
+            }
+        }
+        /* Mobile Table Styles */
+        @media (max-width: 600px) {
+            table, thead, tbody, th, td, tr { 
+                display: block; 
+            }
+            th {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr { 
+                margin-bottom: 15px; 
+                border-bottom: 1px solid #ddd;
+                position: relative;
+            }
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+            td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                font-weight: bold;
+                white-space: nowrap;
+                color: var(--color-primary);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Solaishri Nilgiris - Admin Dashboard</h1>
+
+    <!-- Export Button -->
+    <div class="export-container">
+        <button id="export-btn"><i class="fas fa-file-export"></i> Export as CSV</button>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="Search by Email, Country Code, or Phone" aria-label="Search Submissions">
+    </div>
+
+    <!-- Total Submissions -->
+    <div id="total-submissions">Total Submissions: 0</div>
+
+    <!-- Data Table -->
+    <table id="data-table" style="display: none;">
+        <thead>
+            <tr>
+                <th class="sortable" data-sort="email">Email Address</th>
+                <th class="sortable" data-sort="country_code">Country Code</th>
+                <th class="sortable" data-sort="phone">Phone Number</th>
+                <th class="sortable" data-sort="timestamp">Submission Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be injected here -->
+        </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <div class="pagination" id="pagination" style="display: none;">
+        <button id="prev-btn">Previous</button>
+        <span id="page-info"></span>
+        <button id="next-btn">Next</button>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loading">
+        <div class="spinner" role="status" aria-label="Loading"></div>
+    </div>
+
+    <!-- Error Message -->
+    <div id="error-message" role="alert"></div>
+
+    <!-- Firebase SDKs -->
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Admin Script -->
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCE2LXaKMxFPoRrDVRugOlwHvAmJ6Uq008",
+            authDomain: "solaishri-a9de4.firebaseapp.com",
+            projectId: "solaishri-a9de4",
+            storageBucket: "solaishri-a9de4.appspot.com",
+            messagingSenderId: "627824521536",
+            appId: "1:627824521536:web:d859b8129e36a589f88aa5",
+            measurementId: "G-X263P93P5P"
+        };
+
+        // Initialize Firebase App
+        firebase.initializeApp(firebaseConfig);
+
+        // Initialize Firestore
+        const db = firebase.firestore();
+
+        // References to HTML elements
+        const loadingDiv = document.getElementById('loading');
+        const errorMessageDiv = document.getElementById('error-message');
+        const dataTableBody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+        const searchInput = document.getElementById('search-input');
+        const paginationDiv = document.getElementById('pagination');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pageInfo = document.getElementById('page-info');
+        const exportBtn = document.getElementById('export-btn');
+        const totalSubmissionsDiv = document.getElementById('total-submissions');
+
+        // Data variables
+        let submissions = [];
+        let filteredSubmissions = [];
+        let currentPage = 1;
+        const rowsPerPage = 10;
+        let currentSort = { field: null, direction: 'asc' };
+
+        // Fetch data from Firestore
+        db.collection('submissions').orderBy('timestamp', 'desc').get()
+            .then((querySnapshot) => {
+                loadingDiv.style.display = 'none'; // Hide loading spinner
+
+                if (querySnapshot.empty) {
+                    errorMessageDiv.textContent = 'No submissions found.';
+                    totalSubmissionsDiv.textContent = 'Total Submissions: 0';
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    submissions.push({
+                        id: doc.id,
+                        email: data.email || 'N/A',
+                        country_code: data.country_code || 'N/A',
+                        phone: data.phone || 'N/A',
+                        timestamp: data.timestamp ? data.timestamp.toDate().toLocaleString() : 'N/A'
+                    });
+                });
+
+                // Initialize filteredSubmissions
+                filteredSubmissions = [...submissions];
+
+                // Set Total Submissions
+                totalSubmissionsDiv.textContent = `Total Submissions: ${submissions.length}`;
+
+                // Initial render
+                renderTable();
+                renderPagination();
+                document.getElementById('data-table').style.display = 'table';
+                paginationDiv.style.display = 'flex';
+            })
+            .catch((error) => {
+                console.error('Error fetching submissions:', error);
+                loadingDiv.style.display = 'none'; // Hide loading spinner
+                errorMessageDiv.textContent = 'An error occurred while fetching data. Please try again later.';
+                totalSubmissionsDiv.textContent = 'Total Submissions: 0';
+            });
+
+        // Render Table Function
+        function renderTable() {
+            // Clear existing table data
+            dataTableBody.innerHTML = '';
+
+            // Calculate pagination
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginatedData = filteredSubmissions.slice(start, end);
+
+            // Populate table rows
+            paginatedData.forEach((submission) => {
+                const row = dataTableBody.insertRow();
+
+                const emailCell = row.insertCell(0);
+                const countryCodeCell = row.insertCell(1);
+                const phoneCell = row.insertCell(2);
+                const timestampCell = row.insertCell(3);
+
+                emailCell.textContent = submission.email;
+                countryCodeCell.textContent = submission.country_code;
+                phoneCell.textContent = submission.phone;
+                timestampCell.textContent = submission.timestamp;
+
+                // Add data-label attributes for responsive design
+                emailCell.setAttribute('data-label', 'Email Address');
+                countryCodeCell.setAttribute('data-label', 'Country Code');
+                phoneCell.setAttribute('data-label', 'Phone Number');
+                timestampCell.setAttribute('data-label', 'Submission Time');
+            });
+
+            // Update page info
+            const totalPages = Math.ceil(filteredSubmissions.length / rowsPerPage);
+            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+
+            // Enable/disable pagination buttons
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+        }
+
+        // Render Pagination Function
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredSubmissions.length / rowsPerPage);
+            if (totalPages <= 1) {
+                paginationDiv.style.display = 'none';
+            } else {
+                paginationDiv.style.display = 'flex';
+            }
+        }
+
+        // Pagination Button Event Listeners
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+                renderPagination();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredSubmissions.length / rowsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+                renderPagination();
+            }
+        });
+
+        // Search Functionality
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            currentPage = 1; // Reset to first page
+
+            // Filter submissions based on email, country_code, or phone
+            filteredSubmissions = submissions.filter(submission =>
+                submission.email.toLowerCase().includes(query) ||
+                submission.phone.toLowerCase().includes(query) ||
+                submission.country_code.toLowerCase().includes(query)
+            );
+
+            // Update Total Submissions based on filtered data
+            totalSubmissionsDiv.textContent = `Total Submissions: ${filteredSubmissions.length}`;
+
+            renderTable();
+            renderPagination();
+        });
+
+        // Sorting Functionality
+        const sortableHeaders = document.querySelectorAll('th.sortable');
+        sortableHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const field = header.getAttribute('data-sort');
+
+                if (currentSort.field === field) {
+                    // Toggle sort direction
+                    currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                } else {
+                    // Set new sort field
+                    currentSort.field = field;
+                    currentSort.direction = 'asc';
+                }
+
+                // Remove sort classes from all headers
+                sortableHeaders.forEach(h => h.classList.remove('asc', 'desc'));
+
+                // Add sort class to current header
+                header.classList.add(currentSort.direction);
+
+                // Sort filteredSubmissions array
+                filteredSubmissions.sort((a, b) => {
+                    let valA = a[field];
+                    let valB = b[field];
+
+                    // Handle timestamp sorting
+                    if (field === 'timestamp') {
+                        valA = new Date(a[field]);
+                        valB = new Date(b[field]);
+                    } else {
+                        valA = valA.toLowerCase();
+                        valB = valB.toLowerCase();
+                    }
+
+                    if (valA < valB) return currentSort.direction === 'asc' ? -1 : 1;
+                    if (valA > valB) return currentSort.direction === 'asc' ? 1 : -1;
+                    return 0;
+                });
+
+                renderTable();
+                renderPagination();
+            });
+        });
+
+        // Export to CSV Functionality
+        exportBtn.addEventListener('click', () => {
+            if (filteredSubmissions.length === 0) {
+                alert('No data available to export.');
+                return;
+            }
+
+            const csvHeader = ['Email Address', 'Country Code', 'Phone Number', 'Submission Time'];
+            const csvRows = [csvHeader.join(',')];
+
+            filteredSubmissions.forEach(submission => {
+                const row = [
+                    `"${submission.email}"`,
+                    `"${submission.country_code}"`,
+                    `"${submission.phone}"`,
+                    `"${submission.timestamp}"`
+                ];
+                csvRows.push(row.join(','));
+            });
+
+            const csvContent = csvRows.join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'submissions.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+
+</body>
+</html>
