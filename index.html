@@ -10,488 +10,531 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnH2N8x8M3lg2t5n7oY5l72k3r62hJg5Ow6L8Hf1KBuF8wKgHzbGNbEfa9vVh5gj0JxP+T+Iw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Reset & Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        :root {
-            --font-primary: 'Poppins', sans-serif;
-            --font-secondary: 'Quicksand', sans-serif;
-            --color-primary: #4CAF50;
-            --color-secondary: #388E3C;
-            --color-accent: #ffffff;
-            --color-background: rgba(0, 0, 0, 0.4);
-            --color-text: #d1d1d1;
-            --color-shadow: rgba(0,0,0,0.5);
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: var(--font-primary);
-            /* Background Image with Overlay and Animation */
-            background: linear-gradient(var(--color-background), var(--color-background)), url('bg.jpg') repeat-x center center fixed;
-            background-size: cover;
-            color: var(--color-accent);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            /* Animation Properties */
-            animation: backgroundPan 120s linear infinite;
-        }
-
-        /* Keyframes for Background Panning */
-        @keyframes backgroundPan {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 100% 50%;
-            }
-        }
-
-        /* Reduced Motion Preference */
-        @media (prefers-reduced-motion: reduce) {
-            body {
-                animation: none;
-                background-position: center center;
-            }
-        }
-
-        /* Navbar */
-        .navbar {
-            width: 100%;
-            background: var(--color-accent); /* Fully opaque white */
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: center; /* Center the logo */
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: background 0.3s ease;
-        }
-
-        .navbar img {
-            height: 60px; /* Increased size */
-            transition: transform 0.3s ease;
-            /* Removed box-shadow for a clean look */
-            /* box-shadow: 0 0 5px rgba(0,0,0,0.2); */
-        }
-
-        .navbar img:hover {
-            transform: scale(1.05);
-        }
-
-        /* Dark Mode Toggle Button */
-        #dark-mode-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 20px;
-            color: var(--color-primary);
-            transition: color 0.3s ease;
-            margin-left: 15px;
-        }
-
-        body.dark-mode #dark-mode-toggle {
-            color: #66BB6A;
-        }
-
-        #dark-mode-toggle:hover {
-            color: #2d8f3e;
-        }
-
-        /* Hero Section */
-        .hero-section {
-            text-align: center;
-            margin: 100px 0 40px 0; /* Adjusted margin to account for fixed navbar */
-            width: 100%;
-            max-width: 800px;
-        }
-
-        .hero-section h1 {
-            font-family: var(--font-secondary);
-            font-size: 36px;
-            margin-bottom: 20px;
-            color: var(--color-accent);
-            text-shadow: 2px 2px 4px var(--color-shadow);
-        }
-
-        .hero-section p {
-            font-size: 18px;
-            color: var(--color-text);
-            margin-bottom: 30px;
-        }
-
-        /* Form Container within Hero Section */
-        .form-container {
-            background: rgba(255, 255, 255, 0.15); /* Slightly increased opacity */
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 40px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            position: relative;
-            transition: transform 0.3s ease;
-            margin: 0 auto; /* Center the form */
-        }
-
-        .form-container:hover {
-            transform: translateY(-5px);
-        }
-
-        .form-container h2 {
-            font-family: var(--font-secondary);
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--color-accent); /* Ensures white color for better contrast */
-            text-shadow: 2px 2px 4px var(--color-shadow); /* More pronounced shadow */
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-            position: relative;
-            width: 100%;
-        }
-
-        .form-group label {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            font-weight: 500;
-            color: var(--color-text);
-            font-size: 16px;
-        }
-
-        .form-group label i {
-            margin-right: 8px;
-            color: var(--color-primary);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 16px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            outline: none;
-            background: rgba(255, 255, 255, 0.8);
-            transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-        }
-
-        .form-group input:focus {
-            background: #fff;
-            box-shadow: 0 0 10px var(--color-primary);
-            transform: scale(1.02);
-        }
-
-        .form-group input:hover {
-            background: #fff;
-            box-shadow: 0 0 5px var(--color-primary);
-            transform: scale(1.01);
-        }
-
-        /* Submit Button */
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); /* Richer green tones */
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: 600;
-            color: #fff;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .submit-btn::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.1);
-            transform: rotate(45deg);
-            transition: all 0.5s;
-        }
-
-        .submit-btn:hover::after {
-            top: 100%;
-            left: 100%;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Catalogue Section */
-        .catalogue-section {
-            background: rgba(255, 255, 255, 0.15); /* Slightly increased opacity */
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 40px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            display: none;
-            text-align: center;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-            margin: 20px auto 0 auto; /* Center the catalogue section */
-        }
-
-        .catalogue-section.show {
-            opacity: 1;
-        }
-
-        .catalogue-section h3 {
-            font-family: var(--font-secondary);
-            margin-bottom: 20px;
-            font-size: 22px;
-            font-weight: 600;
-            color: var(--color-accent); /* Ensures white color for better contrast */
-            text-shadow: 2px 2px 4px var(--color-shadow); /* More pronounced shadow */
-        }
-
-        .catalogue-section p {
-            margin-bottom: 30px;
-            font-size: 16px;
-            color: var(--color-text);
-        }
-
-        .catalogue-link {
-            display: inline-block;
-            text-decoration: none;
-            background: var(--color-primary);
-            padding: 12px 25px;
-            border-radius: 8px;
-            color: #fff;
-            font-weight: 600;
-            transition: background 0.3s ease, transform 0.3s ease;
-            font-size: 16px;
-        }
-
-        .catalogue-link:hover {
-            background: var(--color-secondary);
-            transform: translateY(-3px);
-        }
-
-        /* Loading Overlay */
-        #loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark background */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1500; /* Ensures it's above all other elements */
-            display: none; /* Hidden by default */
-        }
-
-        /* Loading Container */
-        .loading-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Enhanced Spinner Styles */
-        .spinner {
-            width: 80px;
-            height: 80px;
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .double-bounce1, .double-bounce2 {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background-color: #4CAF50; /* Green color matching the theme */
-            opacity: 0.6;
-            position: absolute;
-            top: 0;
-            left: 0;
-            
-            animation: bounce 2.0s infinite ease-in-out;
-        }
-
-        .double-bounce2 {
-            animation-delay: -1.0s;
-        }
-
-        /* Keyframes for Spinner Animation */
-        @keyframes bounce {
-            0%, 100% {
-                transform: scale(0.0);
-            }
-            50% {
-                transform: scale(1.0);
-            }
-        }
-
-        /* Animated Loading Message */
-        .loading-message {
-            font-size: 18px;
-            color: #ffffff;
-            animation: fadeInOut 3s infinite;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Keyframes for Loading Message Animation */
-        @keyframes fadeInOut {
-            0%, 100% {
-                opacity: 0;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
-
-        /* Footer Styles */
-        .footer {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            text-align: center;
-            padding: 15px 20px;
-            color: #d1d1d1;
-            font-size: 14px;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 10px 15px;
-            }
-
-            .navbar img {
-                height: 50px; /* Adjusted for better visibility on tablets */
-            }
-
-            .hero-section {
-                margin: 80px 0 20px 0; /* Adjusted for smaller screens */
-            }
-
-            .form-container, .catalogue-section {
-                padding: 30px 20px;
-            }
-
-            .form-container h2 {
-                font-size: 22px;
-            }
-
-            .form-group label {
-                font-size: 14px;
-            }
-
-            .form-group input {
-                font-size: 14px;
-                padding: 10px 14px;
-            }
-
-            .submit-btn {
-                font-size: 16px;
-                padding: 12px;
-            }
-
-            .catalogue-section h3 {
-                font-size: 20px;
-            }
-
-            .catalogue-link {
-                font-size: 14px;
-                padding: 10px 20px;
-            }
-
-            .spinner {
-                width: 60px;
-                height: 60px;
-            }
-
-            .double-bounce1, .double-bounce2 {
-                border-width: 5px;
-            }
-
-            .loading-message {
-                font-size: 16px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-section {
-                margin: 60px 0 10px 0; /* Further adjusted for very small screens */
-            }
-
-            .main-content {
-                padding: 10px;
-            }
-
-            .form-container, .catalogue-section {
-                padding: 25px 15px;
-            }
-
-            .form-container h2 {
-                font-size: 20px;
-            }
-
-            .form-group label {
-                font-size: 13px;
-            }
-
-            .form-group input {
-                font-size: 13px;
-                padding: 8px 12px;
-            }
-
-            .submit-btn {
-                font-size: 14px;
-                padding: 10px;
-            }
-
-            .catalogue-section h3 {
-                font-size: 18px;
-            }
-
-            .catalogue-link {
-                font-size: 12px;
-                padding: 8px 16px;
-            }
-
-            .spinner {
-                width: 50px;
-                height: 50px;
-            }
-
-            .double-bounce1, .double-bounce2 {
-                border-width: 4px;
-            }
-
-            .loading-message {
-                font-size: 14px;
-            }
-        }
+        /* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root {
+    --font-primary: 'Poppins', sans-serif;
+    --font-secondary: 'Quicksand', sans-serif;
+    --color-primary: #4CAF50;
+    --color-secondary: #388E3C;
+    --color-accent: #ffffff;
+    --color-background: rgba(0, 0, 0, 0.4);
+    --color-text: #d1d1d1;
+    --color-shadow: rgba(0,0,0,0.5);
+}
+html {
+    scroll-behavior: smooth;
+}
+body {
+    font-family: var(--font-primary);
+    background: linear-gradient(var(--color-background), var(--color-background)), url('bg.jpg') repeat-x center center fixed;
+    background-size: cover;
+    color: var(--color-accent);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    animation: backgroundPan 120s linear infinite;
+}
+
+/* Keyframes for Background Panning */
+@keyframes backgroundPan {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Reduced Motion Preference */
+@media (prefers-reduced-motion: reduce) {
+    body {
+        animation: none;
+        background-position: center center;
+    }
+}
+
+/* Navbar */
+.navbar {
+    width: 100%;
+    background: var(--color-accent);
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: background 0.3s ease;
+}
+
+.navbar img {
+    height: 60px;
+    transition: transform 0.3s ease;
+}
+.navbar img:hover {
+    transform: scale(1.05);
+}
+
+/* Dark Mode Toggle Button */
+#dark-mode-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--color-primary);
+    transition: color 0.3s ease;
+    margin-left: 15px;
+}
+body.dark-mode #dark-mode-toggle {
+    color: #66BB6A;
+}
+#dark-mode-toggle:hover {
+    color: #2d8f3e;
+}
+
+/* Hero Section */
+.hero-section {
+    text-align: center;
+    margin: 100px 0 40px 0;
+    width: 100%;
+    max-width: 800px;
+}
+
+.hero-section h1 {
+    font-family: var(--font-secondary);
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: var(--color-accent);
+    text-shadow: 2px 2px 4px var(--color-shadow);
+}
+
+.hero-section p {
+    font-size: 18px;
+    color: var(--color-text);
+    margin-bottom: 30px;
+}
+
+/* Form Container within Hero Section */
+.form-container {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    position: relative;
+    transition: transform 0.3s ease;
+    margin: 0 auto;
+}
+
+.form-container:hover {
+    transform: translateY(-5px);
+}
+
+.form-container h2 {
+    font-family: var(--font-secondary);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-shadow: 2px 2px 4px var(--color-shadow);
+}
+
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+    width: 100%;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: var(--color-text);
+    font-size: 16px;
+}
+
+.form-group label i {
+    margin-right: 8px;
+    color: var(--color-primary);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.8);
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.form-group input:focus {
+    background: #fff;
+    box-shadow: 0 0 10px var(--color-primary);
+    transform: scale(1.02);
+}
+
+.form-group input:hover {
+    background: #fff;
+    box-shadow: 0 0 5px var(--color-primary);
+    transform: scale(1.01);
+}
+
+/* Phone Group Styles */
+.phone-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap; /* allow wrapping on small screens */
+}
+
+.phone-group select,
+.phone-group input[type="tel"] {
+    padding: 12px 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.8);
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.phone-group select {
+    flex: 0 0 80px; /* fixed width for code */
+    max-width: 80px;
+}
+
+.phone-group input[type="tel"] {
+    flex: 1; /* the phone number takes remaining space */
+}
+
+.phone-group select:focus,
+.phone-group input[type="tel"]:focus {
+    background: #fff;
+    box-shadow: 0 0 10px var(--color-primary);
+    transform: scale(1.02);
+}
+
+.phone-group select:hover,
+.phone-group input[type="tel"]:hover {
+    background: #fff;
+    box-shadow: 0 0 5px var(--color-primary);
+    transform: scale(1.01);
+}
+
+/* Submit Button */
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.submit-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    transition: all 0.5s;
+}
+
+.submit-btn:hover::after {
+    top: 100%;
+    left: 100%;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Catalogue Section */
+.catalogue-section {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    display: none;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    margin: 20px auto 0 auto;
+}
+
+.catalogue-section.show {
+    opacity: 1;
+}
+
+.catalogue-section h3 {
+    font-family: var(--font-secondary);
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-shadow: 2px 2px 4px var(--color-shadow);
+}
+
+.catalogue-section p {
+    margin-bottom: 30px;
+    font-size: 16px;
+    color: var(--color-text);
+}
+
+.catalogue-link {
+    display: inline-block;
+    text-decoration: none;
+    background: var(--color-primary);
+    padding: 12px 25px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.3s ease;
+    font-size: 16px;
+}
+
+.catalogue-link:hover {
+    background: var(--color-secondary);
+    transform: translateY(-3px);
+}
+
+/* Loading Overlay */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1500;
+    display: none;
+}
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.double-bounce1, .double-bounce2 {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    opacity: 0.6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: bounce 2.0s infinite ease-in-out;
+}
+
+.double-bounce2 {
+    animation-delay: -1.0s;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: scale(0.0);
+    }
+    50% {
+        transform: scale(1.0);
+    }
+}
+
+.loading-message {
+    font-size: 18px;
+    color: #ffffff;
+    animation: fadeInOut 3s infinite;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes fadeInOut {
+    0%, 100% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Footer Styles */
+.footer {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    text-align: center;
+    padding: 15px 20px;
+    color: #d1d1d1;
+    font-size: 14px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px 15px;
+    }
+
+    .navbar img {
+        height: 50px;
+    }
+
+    .hero-section {
+        margin: 80px 0 20px 0;
+    }
+
+    .form-container, .catalogue-section {
+        padding: 30px 20px;
+    }
+
+    .form-container h2 {
+        font-size: 22px;
+    }
+
+    .form-group label {
+        font-size: 14px;
+    }
+
+    .form-group input, .phone-group select, .phone-group input {
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+
+    .submit-btn {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    .catalogue-section h3 {
+        font-size: 20px;
+    }
+
+    .catalogue-link {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+
+    .spinner {
+        width: 60px;
+        height: 60px;
+    }
+
+    .double-bounce1, .double-bounce2 {
+        border-width: 5px;
+    }
+
+    .loading-message {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section {
+        margin: 60px 0 10px 0;
+    }
+
+    .main-content {
+        padding: 10px;
+    }
+
+    .form-container, .catalogue-section {
+        padding: 25px 15px;
+    }
+
+    .form-container h2 {
+        font-size: 20px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    .form-group input, .phone-group select, .phone-group input {
+        font-size: 13px;
+        padding: 8px 12px;
+    }
+
+    .submit-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .catalogue-section h3 {
+        font-size: 18px;
+    }
+
+    .catalogue-link {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+
+    .spinner {
+        width: 50px;
+        height: 50px;
+    }
+
+    .double-bounce1, .double-bounce2 {
+        border-width: 4px;
+    }
+
+    .loading-message {
+        font-size: 14px;
+    }
+
+    /* On very small screens, stack code and phone number vertically for better spacing */
+    .phone-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .phone-group select,
+    .phone-group input[type="tel"] {
+        flex: none;
+        width: 100%;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -506,10 +549,10 @@
 
     <!-- Hero Section with Embedded Form -->
     <div class="hero-section">
+        <br>
         <h1>Your Gateway to the Beautiful Nilgiris</h1>
-        <p>Discover the serene landscapes and rich culture with Solaishri Nilgiris.</p>
-        <!-- Removed Get Started Button -->
-
+        <br>
+       
         <!-- Form Container within Hero Section -->
         <div class="form-container" id="form-container">
             <h2>Welcome to Solaishri Nilgiris!</h2>
@@ -520,14 +563,31 @@
                 <!-- No redirect since we'll show catalogue inline -->
                 <input type="hidden" name="_captcha" value="false">
 
-                <!-- Form Fields -->
+                <!-- Email Field -->
                 <div class="form-group">
                     <label for="email"><i class="fas fa-envelope"></i> Email Address *</label>
                     <input type="email" id="email" name="email" required placeholder="your-email@example.com" aria-required="true">
                 </div>
+                
+                <!-- Phone Field with Country Code Dropdown -->
                 <div class="form-group">
                     <label for="phone"><i class="fas fa-phone-alt"></i> Phone Number *</label>
-                    <input type="tel" id="phone" name="phone" required placeholder="+1 234 567 8901" aria-required="true">
+                    <div class="phone-group">
+                        <select id="country_code" name="country_code" required aria-required="true" aria-label="Select Country Code">
+                            <option value="" disabled selected>Code</option>
+                            <option value="+1">+1 (USA)</option>
+                            <option value="+44">+44 (UK)</option>
+                            <option value="+91">+91 (India)</option>
+                            <option value="+61">+61 (Australia)</option>
+                            <option value="+81">+81 (Japan)</option>
+                            <option value="+49">+49 (Germany)</option>
+                            <option value="+33">+33 (France)</option>
+                            <option value="+86">+86 (China)</option>
+                            <option value="+34">+34 (Spain)</option>
+                            <option value="+39">+39 (Italy)</option>
+                        </select>
+                        <input type="tel" id="phone" name="phone" required placeholder="+1 234 567 8901" aria-required="true">
+                    </div>
                 </div>
 
                 <button type="submit" class="submit-btn" aria-label="View Our Catalogue">View Our Catalogue</button>
@@ -539,7 +599,6 @@
     <div class="catalogue-section" id="catalogue-section">
         <h3>Our Catalogue</h3>
         <p>Thank you for providing your details! Browse our catalogue below:</p>
-        <!-- Replace with your actual catalogue link or embed a PDF using an iframe -->
         <a class="catalogue-link" href="solaishri.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Open Catalogue</a>
     </div>
 
@@ -556,7 +615,6 @@
                 <div class="double-bounce1"></div>
                 <div class="double-bounce2"></div>
             </div>
-            <!-- Animated Loading Message -->
             <p class="loading-message">Submitting your information...</p>
         </div>
     </div>
@@ -583,29 +641,29 @@
             }
         });
 
-        /* 
-           Removed Hamburger Menu JavaScript 
-           Since the hamburger menu has been removed from the HTML,
-           there's no need for its JavaScript functionality.
-        */
-
         // Form Submission Handling
         const form = document.getElementById('contact-form');
         const formContainer = document.getElementById('form-container');
         const catalogueSection = document.getElementById('catalogue-section');
-        const loadingOverlay = document.getElementById('loading-overlay'); // Loading overlay element
+        const loadingOverlay = document.getElementById('loading-overlay');
 
         form.addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent default form submission
 
             // Validate form fields before submission
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const countryCode = document.getElementById('country_code').value;
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             const phonePattern = /^\+?[0-9\s\-]{7,15}$/;
 
             if (!emailPattern.test(email)) {
                 alert('Please enter a valid email address.');
+                return;
+            }
+
+            if (!countryCode) {
+                alert('Please select a country code.');
                 return;
             }
 
