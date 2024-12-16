@@ -27,7 +27,7 @@
             align-items: center;
             position: relative;
             /* Animation Properties */
-            animation: backgroundPan 60s linear infinite;
+            animation: backgroundPan 120s linear infinite;
         }
 
         /* Keyframes for Background Panning */
@@ -40,9 +40,12 @@
             }
         }
 
-        /* Optional: Pause animation on hover */
-        body:hover {
-            animation-play-state: paused;
+        /* Reduced Motion Preference */
+        @media (prefers-reduced-motion: reduce) {
+            body {
+                animation: none;
+                background-position: center center;
+            }
         }
 
         /* Navbar */
@@ -72,6 +75,54 @@
             transform: scale(1.05);
         }
 
+        /* Hamburger Menu Styles */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .hamburger span {
+            height: 3px;
+            width: 25px;
+            background: #3fa14b;
+            margin-bottom: 4px;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* Show hamburger on smaller screens */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            /* Optionally, hide the centered logo or adjust layout */
+            .navbar img {
+                margin: 0 auto;
+            }
+        }
+
+        /* Dark Mode Toggle Button */
+        #dark-mode-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: #3fa14b;
+            transition: color 0.3s ease;
+            margin-left: 15px;
+        }
+
+        body.dark-mode #dark-mode-toggle {
+            color: #66BB6A;
+        }
+
+        #dark-mode-toggle:hover {
+            color: #2d8f3e;
+        }
+
         /* Main Content Wrapper */
         .main-content {
             /* Full viewport height minus navbar height */
@@ -86,7 +137,7 @@
 
         /* Form Container */
         .form-container {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15); /* Slightly increased opacity */
             backdrop-filter: blur(15px);
             border-radius: 20px;
             padding: 40px;
@@ -106,8 +157,8 @@
             margin-bottom: 30px;
             font-size: 24px;
             font-weight: 600;
-            color: #f0f0f0;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            color: #ffffff; /* Ensures white color for better contrast */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* More pronounced shadow */
         }
 
         .form-group {
@@ -138,23 +189,25 @@
             font-size: 16px;
             outline: none;
             background: rgba(255, 255, 255, 0.8);
-            transition: background 0.3s ease, box-shadow 0.3s ease;
+            transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
         }
 
         .form-group input:focus {
             background: #fff;
             box-shadow: 0 0 10px #3fa14b;
+            transform: scale(1.02);
         }
 
         .form-group input:hover {
             background: #fff;
             box-shadow: 0 0 5px #3fa14b;
+            transform: scale(1.01);
         }
 
         .submit-btn {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, #3fa14b, #2d8f3e);
+            background: linear-gradient(135deg, #4CAF50, #388E3C); /* Richer green tones */
             border: none;
             border-radius: 10px;
             font-size: 18px;
@@ -190,7 +243,7 @@
 
         /* Catalogue Section */
         .catalogue-section {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15); /* Slightly increased opacity */
             backdrop-filter: blur(15px);
             border-radius: 20px;
             padding: 40px;
@@ -199,15 +252,20 @@
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             display: none;
             text-align: center;
-            transition: opacity 0.5s ease;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .catalogue-section.show {
+            opacity: 1;
         }
 
         .catalogue-section h3 {
             margin-bottom: 20px;
             font-size: 22px;
             font-weight: 600;
-            color: #f0f0f0;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            color: #ffffff; /* Ensures white color for better contrast */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* More pronounced shadow */
         }
 
         .catalogue-section p {
@@ -219,7 +277,7 @@
         .catalogue-link {
             display: inline-block;
             text-decoration: none;
-            background: #3fa14b;
+            background: #4CAF50;
             padding: 12px 25px;
             border-radius: 8px;
             color: #fff;
@@ -229,7 +287,7 @@
         }
 
         .catalogue-link:hover {
-            background: #2d8f3e;
+            background: #388E3C;
             transform: translateY(-3px);
         }
 
@@ -240,7 +298,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(31, 47, 94, 0.8); /* Semi-transparent background */
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent dark background */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -248,41 +306,79 @@
             display: none; /* Hidden by default */
         }
 
-        /* Spinner Styles */
-        .lds-ring {
-            display: inline-block;
+        /* Loading Container */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Enhanced Spinner Styles */
+        .spinner {
+            width: 80px;
+            height: 80px;
             position: relative;
-            width: 60px;
-            height: 60px;
+            margin-bottom: 20px;
         }
-        .lds-ring div {
-            box-sizing: border-box;
-            display: block;
-            position: absolute;
-            width: 44px;
-            height: 44px;
-            margin: 8px;
-            border: 6px solid #fff;
+
+        .double-bounce1, .double-bounce2 {
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-            border-color: #fff transparent transparent transparent;
+            background-color: #4CAF50; /* Green color matching the theme */
+            opacity: 0.6;
+            position: absolute;
+            top: 0;
+            left: 0;
+            
+            animation: bounce 2.0s infinite ease-in-out;
         }
-        .lds-ring div:nth-child(1) {
-            animation-delay: -0.45s;
+
+        .double-bounce2 {
+            animation-delay: -1.0s;
         }
-        .lds-ring div:nth-child(2) {
-            animation-delay: -0.3s;
-        }
-        .lds-ring div:nth-child(3) {
-            animation-delay: -0.15s;
-        }
-        @keyframes lds-ring {
-            0% {
-                transform: rotate(0deg);
+
+        /* Keyframes for Spinner Animation */
+        @keyframes bounce {
+            0%, 100% {
+                transform: scale(0.0);
             }
-            100% {
-                transform: rotate(360deg);
+            50% {
+                transform: scale(1.0);
             }
+        }
+
+        /* Animated Loading Message */
+        .loading-message {
+            font-size: 18px;
+            color: #ffffff;
+            animation: fadeInOut 3s infinite;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Keyframes for Loading Message Animation */
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Footer Styles */
+        .footer {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            padding: 15px 20px;
+            color: #d1d1d1;
+            font-size: 14px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
         }
 
         /* Responsive Design */
@@ -330,16 +426,17 @@
                 padding: 10px 20px;
             }
 
-            .lds-ring {
-                width: 50px;
-                height: 50px;
+            .spinner {
+                width: 60px;
+                height: 60px;
             }
 
-            .lds-ring div {
-                width: 34px;
-                height: 34px;
-                margin: 8px;
+            .double-bounce1, .double-bounce2 {
                 border-width: 5px;
+            }
+
+            .loading-message {
+                font-size: 16px;
             }
         }
 
@@ -379,16 +476,17 @@
                 padding: 8px 16px;
             }
 
-            .lds-ring {
-                width: 40px;
-                height: 40px;
+            .spinner {
+                width: 50px;
+                height: 50px;
             }
 
-            .lds-ring div {
-                width: 28px;
-                height: 28px;
-                margin: 6px;
+            .double-bounce1, .double-bounce2 {
                 border-width: 4px;
+            }
+
+            .loading-message {
+                font-size: 14px;
             }
         }
     </style>
@@ -397,9 +495,16 @@
 
     <!-- Navbar -->
     <div class="navbar">
-        <!-- Update the logo path accordingly -->
-        <img src="logo.jpg" alt="Solaishri Nilgiris Logo">
-        <!-- Future: Hamburger menu can be added here for expanded navigation on mobile -->
+        <!-- Logo -->
+        <img src="logo.jpg" alt="Solaishri Nilgiris Logo" loading="lazy">
+        <!-- Dark Mode Toggle -->
+        <button id="dark-mode-toggle" aria-label="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
+        <!-- Hamburger Menu -->
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </div>
 
     <!-- Main Content Wrapper -->
@@ -407,7 +512,7 @@
         <!-- Form Container -->
         <div class="form-container" id="form-container">
             <h2>Welcome to Solaishri Nilgiris!</h2>
-            <form id="contact-form">
+            <form id="contact-form" novalidate>
                 <!-- Spam Protection Honeypot -->
                 <input type="hidden" name="_honey" style="display:none">
                 
@@ -417,11 +522,11 @@
                 <!-- Form Fields -->
                 <div class="form-group">
                     <label for="email"><i class="fas fa-envelope"></i> Email Address *</label>
-                    <input type="email" id="email" name="email" required placeholder="your-email@example.com">
+                    <input type="email" id="email" name="email" required placeholder="your-email@example.com" aria-required="true">
                 </div>
                 <div class="form-group">
                     <label for="phone"><i class="fas fa-phone-alt"></i> Phone Number *</label>
-                    <input type="tel" id="phone" name="phone" required placeholder="+1 234 567 8901">
+                    <input type="tel" id="phone" name="phone" required placeholder="+1 234 567 8901" aria-required="true">
                 </div>
 
                 <button type="submit" class="submit-btn" aria-label="View Our Catalogue">View Our Catalogue</button>
@@ -437,12 +542,55 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Solaishri Nilgiris. All rights reserved.</p>
+    </footer>
+
     <!-- Loading Overlay -->
-    <div id="loading-overlay" aria-live="assertive">
-        <div class="lds-ring" aria-label="Loading..."><div></div><div></div><div></div><div></div></div>
+    <div id="loading-overlay" aria-live="assertive" role="alert" aria-busy="true">
+        <div class="loading-container">
+            <!-- Enhanced Spinner -->
+            <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+            <!-- Animated Loading Message -->
+            <p class="loading-message">Submitting your information...</p>
+        </div>
     </div>
 
     <script>
+        // Dark Mode Toggle Script
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            // Optionally, save user preference in localStorage
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+            } else {
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Apply saved theme on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        });
+
+        // Hamburger Menu Click Event (Future Implementation)
+        const hamburger = document.getElementById('hamburger');
+
+        hamburger.addEventListener('click', () => {
+            // Placeholder for future navigation menu
+            alert('Hamburger menu clicked! Implement navigation here.');
+        });
+
+        // Form Submission Handling
         const form = document.getElementById('contact-form');
         const formContainer = document.getElementById('form-container');
         const catalogueSection = document.getElementById('catalogue-section');
@@ -450,6 +598,22 @@
 
         form.addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent default form submission
+
+            // Validate form fields before submission
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const phonePattern = /^\+?[0-9\s\-]{7,15}$/;
+
+            if (!emailPattern.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            if (!phonePattern.test(phone)) {
+                alert('Please enter a valid phone number.');
+                return;
+            }
 
             // Show loading overlay
             loadingOverlay.style.display = 'flex';
@@ -475,10 +639,8 @@
                     formContainer.style.display = 'none';
                     // Show catalogue section with fade-in effect
                     catalogueSection.style.display = 'block';
-                    catalogueSection.style.opacity = 0;
                     setTimeout(() => {
-                        catalogueSection.style.transition = 'opacity 0.5s ease';
-                        catalogueSection.style.opacity = 1;
+                        catalogueSection.classList.add('show');
                     }, 10);
                 } else {
                     alert('Oops! Something went wrong. Please try again later.');
