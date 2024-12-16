@@ -15,12 +15,25 @@
             padding: 0;
             box-sizing: border-box;
         }
+        :root {
+            --font-primary: 'Poppins', sans-serif;
+            --font-secondary: 'Quicksand', sans-serif;
+            --color-primary: #4CAF50;
+            --color-secondary: #388E3C;
+            --color-accent: #ffffff;
+            --color-background: rgba(0, 0, 0, 0.4);
+            --color-text: #d1d1d1;
+            --color-shadow: rgba(0,0,0,0.5);
+        }
+        html {
+            scroll-behavior: smooth;
+        }
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: var(--font-primary);
             /* Background Image with Overlay and Animation */
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('bg.jpg') repeat-x center center fixed;
+            background: linear-gradient(var(--color-background), var(--color-background)), url('bg.jpg') repeat-x center center fixed;
             background-size: cover;
-            color: #fff;
+            color: var(--color-accent);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -51,7 +64,7 @@
         /* Navbar */
         .navbar {
             width: 100%;
-            background: #ffffff; /* Fully opaque white */
+            background: var(--color-accent); /* Fully opaque white */
             position: fixed;
             top: 0;
             left: 0;
@@ -75,42 +88,13 @@
             transform: scale(1.05);
         }
 
-        /* Hamburger Menu Styles */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            margin-left: auto;
-        }
-
-        .hamburger span {
-            height: 3px;
-            width: 25px;
-            background: #3fa14b;
-            margin-bottom: 4px;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
-
-        /* Show hamburger on smaller screens */
-        @media (max-width: 768px) {
-            .hamburger {
-                display: flex;
-            }
-
-            /* Optionally, hide the centered logo or adjust layout */
-            .navbar img {
-                margin: 0 auto;
-            }
-        }
-
         /* Dark Mode Toggle Button */
         #dark-mode-toggle {
             background: none;
             border: none;
             cursor: pointer;
             font-size: 20px;
-            color: #3fa14b;
+            color: var(--color-primary);
             transition: color 0.3s ease;
             margin-left: 15px;
         }
@@ -123,19 +107,29 @@
             color: #2d8f3e;
         }
 
-        /* Main Content Wrapper */
-        .main-content {
-            /* Full viewport height minus navbar height */
-            flex: 1;
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin: 100px 0 40px 0; /* Adjusted margin to account for fixed navbar */
             width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-top: 80px; /* Space for navbar */
-            padding-bottom: 20px; /* Optional padding at the bottom */
+            max-width: 800px;
         }
 
-        /* Form Container */
+        .hero-section h1 {
+            font-family: var(--font-secondary);
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: var(--color-accent);
+            text-shadow: 2px 2px 4px var(--color-shadow);
+        }
+
+        .hero-section p {
+            font-size: 18px;
+            color: var(--color-text);
+            margin-bottom: 30px;
+        }
+
+        /* Form Container within Hero Section */
         .form-container {
             background: rgba(255, 255, 255, 0.15); /* Slightly increased opacity */
             backdrop-filter: blur(15px);
@@ -146,6 +140,7 @@
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             position: relative;
             transition: transform 0.3s ease;
+            margin: 0 auto; /* Center the form */
         }
 
         .form-container:hover {
@@ -153,12 +148,13 @@
         }
 
         .form-container h2 {
+            font-family: var(--font-secondary);
             text-align: center;
             margin-bottom: 30px;
             font-size: 24px;
             font-weight: 600;
-            color: #ffffff; /* Ensures white color for better contrast */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* More pronounced shadow */
+            color: var(--color-accent); /* Ensures white color for better contrast */
+            text-shadow: 2px 2px 4px var(--color-shadow); /* More pronounced shadow */
         }
 
         .form-group {
@@ -172,13 +168,13 @@
             align-items: center;
             margin-bottom: 10px;
             font-weight: 500;
-            color: #d1d1d1;
+            color: var(--color-text);
             font-size: 16px;
         }
 
         .form-group label i {
             margin-right: 8px;
-            color: #3fa14b;
+            color: var(--color-primary);
         }
 
         .form-group input {
@@ -194,20 +190,21 @@
 
         .form-group input:focus {
             background: #fff;
-            box-shadow: 0 0 10px #3fa14b;
+            box-shadow: 0 0 10px var(--color-primary);
             transform: scale(1.02);
         }
 
         .form-group input:hover {
             background: #fff;
-            box-shadow: 0 0 5px #3fa14b;
+            box-shadow: 0 0 5px var(--color-primary);
             transform: scale(1.01);
         }
 
+        /* Submit Button */
         .submit-btn {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(135deg, #4CAF50, #388E3C); /* Richer green tones */
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); /* Richer green tones */
             border: none;
             border-radius: 10px;
             font-size: 18px;
@@ -254,6 +251,7 @@
             text-align: center;
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
+            margin: 20px auto 0 auto; /* Center the catalogue section */
         }
 
         .catalogue-section.show {
@@ -261,23 +259,24 @@
         }
 
         .catalogue-section h3 {
+            font-family: var(--font-secondary);
             margin-bottom: 20px;
             font-size: 22px;
             font-weight: 600;
-            color: #ffffff; /* Ensures white color for better contrast */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* More pronounced shadow */
+            color: var(--color-accent); /* Ensures white color for better contrast */
+            text-shadow: 2px 2px 4px var(--color-shadow); /* More pronounced shadow */
         }
 
         .catalogue-section p {
             margin-bottom: 30px;
             font-size: 16px;
-            color: #d1d1d1;
+            color: var(--color-text);
         }
 
         .catalogue-link {
             display: inline-block;
             text-decoration: none;
-            background: #4CAF50;
+            background: var(--color-primary);
             padding: 12px 25px;
             border-radius: 8px;
             color: #fff;
@@ -287,7 +286,7 @@
         }
 
         .catalogue-link:hover {
-            background: #388E3C;
+            background: var(--color-secondary);
             transform: translateY(-3px);
         }
 
@@ -391,8 +390,8 @@
                 height: 50px; /* Adjusted for better visibility on tablets */
             }
 
-            .main-content {
-                padding: 15px;
+            .hero-section {
+                margin: 80px 0 20px 0; /* Adjusted for smaller screens */
             }
 
             .form-container, .catalogue-section {
@@ -441,6 +440,10 @@
         }
 
         @media (max-width: 480px) {
+            .hero-section {
+                margin: 60px 0 10px 0; /* Further adjusted for very small screens */
+            }
+
             .main-content {
                 padding: 10px;
             }
@@ -499,17 +502,15 @@
         <img src="logo.jpg" alt="Solaishri Nilgiris Logo" loading="lazy">
         <!-- Dark Mode Toggle -->
         <button id="dark-mode-toggle" aria-label="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
-        <!-- Hamburger Menu -->
-        <div class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
     </div>
 
-    <!-- Main Content Wrapper -->
-    <div class="main-content">
-        <!-- Form Container -->
+    <!-- Hero Section with Embedded Form -->
+    <div class="hero-section">
+        <h1>Your Gateway to the Beautiful Nilgiris</h1>
+        <p>Discover the serene landscapes and rich culture with Solaishri Nilgiris.</p>
+        <!-- Removed Get Started Button -->
+
+        <!-- Form Container within Hero Section -->
         <div class="form-container" id="form-container">
             <h2>Welcome to Solaishri Nilgiris!</h2>
             <form id="contact-form" novalidate>
@@ -532,14 +533,14 @@
                 <button type="submit" class="submit-btn" aria-label="View Our Catalogue">View Our Catalogue</button>
             </form>
         </div>
+    </div>
 
-        <!-- Catalogue Section -->
-        <div class="catalogue-section" id="catalogue-section">
-            <h3>Our Catalogue</h3>
-            <p>Thank you for providing your details! Browse our catalogue below:</p>
-            <!-- Replace with your actual catalogue link or embed a PDF using an iframe -->
-            <a class="catalogue-link" href="solaishri.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Open Catalogue</a>
-        </div>
+    <!-- Catalogue Section -->
+    <div class="catalogue-section" id="catalogue-section">
+        <h3>Our Catalogue</h3>
+        <p>Thank you for providing your details! Browse our catalogue below:</p>
+        <!-- Replace with your actual catalogue link or embed a PDF using an iframe -->
+        <a class="catalogue-link" href="solaishri.pdf" target="_blank"><i class="fas fa-file-pdf"></i> Open Catalogue</a>
     </div>
 
     <!-- Footer -->
@@ -582,13 +583,11 @@
             }
         });
 
-        // Hamburger Menu Click Event (Future Implementation)
-        const hamburger = document.getElementById('hamburger');
-
-        hamburger.addEventListener('click', () => {
-            // Placeholder for future navigation menu
-            alert('Hamburger menu clicked! Implement navigation here.');
-        });
+        /* 
+           Removed Hamburger Menu JavaScript 
+           Since the hamburger menu has been removed from the HTML,
+           there's no need for its JavaScript functionality.
+        */
 
         // Form Submission Handling
         const form = document.getElementById('contact-form');
